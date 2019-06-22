@@ -31,7 +31,7 @@ class Board():
         for row in range(self.rows):
             for column in range(self.columns - 3):
                 if np.count_nonzero(
-                        self.board[row][column:column + 3] == piece) == 3:
+                        self.board[row, column:column + 3] == piece) == 3:
                     print("Winning row {}, columns[{} : {}]".format(
                         row, column, column + 3))
                     return True
@@ -39,7 +39,7 @@ class Board():
         for column in range(self.columns):
             for row in range(self.rows - 3):
                 if np.count_nonzero(
-                        self.board[row:row + 3][column] == piece) == 3:
+                        self.board[row:row + 3, column] == piece) == 3:
                     print("Winning column {}, rows[{} : {}]".format(
                         column, row, row + 3))
                     return True
