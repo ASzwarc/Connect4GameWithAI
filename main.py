@@ -13,13 +13,21 @@ def draw_board(board):
 
     for column in range(const.COLUMN_COUNT):
         for row in range(const.ROW_COUNT):
+            position = (int(column*const.CIRCLE_DIAMETER +
+                            const.CIRCLE_DIAMETER / 2),
+                        int(const.SCREEN_HEIGHT -
+                            row*const.CIRCLE_DIAMETER -
+                            const.CIRCLE_DIAMETER/2))
+            color = const.BLACK
+            if board[row, column] == 1:
+                color = const.RED
+            elif board[row, column] == 2:
+                color = const.YELLOW
+
             pygame.draw.circle(
                 screen,
-                const.BLACK,
-                (int(column*const.SQUARE_SIZE + const.SQUARE_SIZE / 2),
-                    int(const.MESSAGE_PROMPT_SIZE +
-                        row*const.SQUARE_SIZE +
-                        const.SQUARE_SIZE/2)),
+                color,
+                position,
                 const.RADIUS, 0)
 
     pygame.display.update()
@@ -33,6 +41,9 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(screen_size)
 
     myfont = pygame.font.SysFont("monospace", 75)
+
+    board.drop_piece(0, 2, 1)
+    board.drop_piece(1, 3, 2)
 
     draw_board(board.board)
 
