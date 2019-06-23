@@ -23,7 +23,7 @@ class Board():
         """
         self.board[row][col] = piece
 
-    def is_move_winning(self, piece):
+    def is_move_winning(self, piece) -> bool:
         """
         Check if there are 3 same elements in row, column or diagonal
         """
@@ -43,3 +43,15 @@ class Board():
                     print("Winning column {}, rows[{} : {}]".format(
                         column, row, row + 3))
                     return True
+
+        # check diagonals
+        for diagonal in range(-3, 4):
+            if np.count_nonzero(self.board.diagonal(diagonal) == piece) == 3:
+                print("Winning diagonal {}".format(diagonal))
+                return True
+            elif np.count_nonzero(
+                    np.fliplr(self.board).diagonal(diagonal) == piece) == 3:
+                print("Winning diagonal, flipped {}".format(diagonal))
+                return True
+
+        return False
