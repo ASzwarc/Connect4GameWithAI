@@ -25,7 +25,7 @@ class Board():
         """
         Drops new piece to game board.
         """
-        self.__board[row][col] = piece
+        self.__board[row, col] = piece
 
     def is_move_winning(self, piece) -> bool:
         """
