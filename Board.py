@@ -27,6 +27,19 @@ class Board():
         """
         self.__board[row, col] = piece
 
+    def is_empty_slot_in(self, col) -> bool:
+        """
+        Checks if there is place in column to add another piece
+        """
+        return np.count_nonzero(self.__board[:, col] == 0) != 0
+
+    def get_open_row(self, col) -> int:
+        """
+        Returns index of first, not occupied row in column
+        It throws error if there are no empty slots in column!
+        """
+        return np.nonzero(self.__board[:, col] == 0)[0][0]
+
     def is_move_winning(self, piece) -> bool:
         """
         Check if there are 3 same elements in row, column or diagonal
