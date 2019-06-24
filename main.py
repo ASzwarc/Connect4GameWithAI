@@ -11,10 +11,7 @@ if __name__ == '__main__':
 
     pygame.init()
 
-    screen_size = (const.SCREEN_WIDTH, const.SCREEN_HEIGHT)
-    screen = pygame.display.set_mode(screen_size)
-
-    view = View.View(screen)
+    view = View.View()
     view.draw_board(board)
 
     end_game = False
@@ -32,24 +29,11 @@ if __name__ == '__main__':
                 end_game = True
 
             elif event.type == pygame.MOUSEMOTION:
-                # clear the prompt from previously drawn piece
-                pygame.draw.rect(
-                    screen,
-                    const.BLACK,
-                    (0, 0, const.SCREEN_WIDTH, const.MESSAGE_PROMPT_SIZE))
-                # draw new piece
-                pygame.draw.circle(
-                    screen,
-                    color,
-                    (event.pos[0], int(const.CIRCLE_DIAMETER / 2)),
-                    int(const.CIRCLE_DIAMETER/2))
-                pygame.display.update()
+                pos_x = event.pos[0]
+                view.draw_piece_in_prompt(color, pos_x)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                pygame.draw.rect(
-                    screen,
-                    const.BLACK,
-                    (0, 0, const.SCREEN_WIDTH, const.MESSAGE_PROMPT_SIZE))
+                view.clear_prompt_screen()
                 column = int(math.floor(event.pos[0]) / const.CIRCLE_DIAMETER)
                 if board.is_empty_slot_in(column):
                     row = board.get_open_row(column)
