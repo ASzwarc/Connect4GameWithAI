@@ -1,37 +1,9 @@
 import pygame
 import sys
 import Board
+import View
 import constants as const
 import math
-
-
-def draw_board(board):
-    pygame.draw.rect(
-        screen,
-        const.BLUE,
-        (0, const.MESSAGE_PROMPT_SIZE,
-            const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
-
-    for column in range(const.COLUMN_COUNT):
-        for row in range(const.ROW_COUNT):
-            position = (int(column*const.CIRCLE_DIAMETER +
-                            const.CIRCLE_DIAMETER / 2),
-                        int(const.SCREEN_HEIGHT -
-                            row*const.CIRCLE_DIAMETER -
-                            const.CIRCLE_DIAMETER/2))
-            color = const.BLACK
-            if board[row, column] == 1:
-                color = const.RED
-            elif board[row, column] == 2:
-                color = const.YELLOW
-
-            pygame.draw.circle(
-                screen,
-                color,
-                position,
-                const.RADIUS, 0)
-
-    pygame.display.update()
 
 
 if __name__ == '__main__':
@@ -44,7 +16,8 @@ if __name__ == '__main__':
 
     myfont = pygame.font.SysFont("monospace", const.FONT_SIZE)
 
-    draw_board(board.board)
+    view = View.View(screen)
+    view.draw_board(board)
 
     end_game = False
     turn = 0
@@ -92,7 +65,7 @@ if __name__ == '__main__':
                         screen.blit(message, (40, 10))
                         pygame.display.update()
                         end_game = True
-                draw_board(board.board)
+                view.draw_board(board)
                 turn += 1
         pygame.display.flip()
 
