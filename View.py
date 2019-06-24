@@ -10,6 +10,9 @@ class View:
 
     def __init__(self, screen):
         self.__screen = screen
+        self.__myfont = pygame.font.SysFont("monospace", const.FONT_SIZE)
+
+        pygame.font.init()
 
     def draw_board(self, board):
         """
@@ -40,4 +43,15 @@ class View:
                     position,
                     const.RADIUS, 0)
 
+        pygame.display.update()
+
+    def display_winning_message(self, player_no, color):
+        """
+        Display message with information which player has won
+        """
+        message = self.__myfont.render(
+            "Player {} wins !!!".format(player_no),
+            True,
+            color)
+        self.__screen.blit(message, (40, 10))
         pygame.display.update()
