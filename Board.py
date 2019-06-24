@@ -15,6 +15,14 @@ class Board():
     def board(self):
         return self.__board
 
+    @property
+    def rows(self):
+        return self.__rows
+
+    @property
+    def columns(self):
+        return self.__columns
+
     def print_board(self):
         """
         Prints board to standard output
@@ -49,26 +57,20 @@ class Board():
             for column in range(self.__columns - 4):
                 if np.count_nonzero(
                         self.__board[row, column:column + 4] == piece) == 4:
-                    print("Winning row {}, columns[{} : {}]".format(
-                        row, column, column + 3))
                     return True
         # check columns
         for column in range(self.__columns):
             for row in range(self.__rows - 4):
                 if np.count_nonzero(
                         self.__board[row:row + 4, column] == piece) == 4:
-                    print("Winning column {}, rows[{} : {}]".format(
-                        column, row, row + 3))
                     return True
 
         # check diagonals
         for diagonal in range(-2, 3):
             if np.count_nonzero(self.__board.diagonal(diagonal) == piece) == 4:
-                print("Winning diagonal {}".format(diagonal))
                 return True
             elif np.count_nonzero(
                     np.fliplr(self.__board).diagonal(diagonal) == piece) == 4:
-                print("Winning diagonal, flipped {}".format(diagonal))
                 return True
 
         return False
