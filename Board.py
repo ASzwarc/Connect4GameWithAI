@@ -5,6 +5,8 @@ from constants import ROW_COUNT, COLUMN_COUNT
 import numpy as np
 
 
+# TODO Add functions to count each players ones, twos and threes in a row,
+# column and diagonal to create score metrics after each move
 class Board():
     def __init__(self):
         self.__rows = ROW_COUNT

@@ -38,6 +38,7 @@ class GameController:
         """
         Function that runs main game loop
         """
+        # TODO Refactor main loop so it's using AI code as second player
         end_game = False
         while not end_game:
 
@@ -66,8 +67,8 @@ class GameController:
                                 self.__get_player_no(), self.__get_color())
                             end_game = True
 
+                        self.__turn += 1
                     self.__view.draw_board(self.__board)
-                    self.__turn += 1
 
             self.__view.display_flip()
 
