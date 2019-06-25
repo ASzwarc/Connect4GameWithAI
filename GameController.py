@@ -16,7 +16,6 @@ class GameController:
         self.__view = View.View()
         self.__turn = 0
 
-
         self.__view.draw_board(self.__board)
 
     def __get_color(self):
