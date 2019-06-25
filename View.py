@@ -4,6 +4,7 @@ Definiton of class View that's responsible for all the drawing
 
 import constants as const
 import pygame
+import sys
 
 
 class View:
@@ -70,3 +71,9 @@ class View:
         pygame.draw.rect(self.__screen, const.BLACK,
                          (0, 0, const.SCREEN_WIDTH, const.MESSAGE_PROMPT_SIZE))
         pygame.display.update()
+
+    def display_flip(self):
+        """
+        Calls pygame.display.flip()
+        """
+        pygame.display.flip()
