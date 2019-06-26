@@ -10,9 +10,9 @@ import sys
 class View:
 
     def __init__(self):
-        self.__screen = pygame.display.set_mode((const.SCREEN_WIDTH,
-                                                 const.SCREEN_HEIGHT))
-        self.__myfont = pygame.font.SysFont("monospace", const.FONT_SIZE)
+        self._screen = pygame.display.set_mode((const.SCREEN_WIDTH,
+                                               const.SCREEN_HEIGHT))
+        self._myfont = pygame.font.SysFont(const.FONT_TYPE, const.FONT_SIZE)
 
         pygame.font.init()
 
@@ -20,7 +20,7 @@ class View:
         """
         Draws empty board on screen
         """
-        pygame.draw.rect(self.__screen, const.BLUE,
+        pygame.draw.rect(self._screen, const.BLUE,
                          (0, const.MESSAGE_PROMPT_SIZE,
                           const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
 
@@ -37,7 +37,7 @@ class View:
                 elif board.board[row, column] == 2:
                     color = const.YELLOW
 
-                pygame.draw.circle(self.__screen, color, position,
+                pygame.draw.circle(self._screen, color, position,
                                    const.RADIUS, 0)
         pygame.display.update()
 
@@ -45,9 +45,9 @@ class View:
         """
         Display message with information which player has won
         """
-        message = self.__myfont.render(
-            "Player {} wins !!!".format(player_no), True, color)
-        self.__screen.blit(message, (40, 10))
+        message = self._myfont.render(
+            f"Player {player_no} wins !!!", True, color)
+        self._screen.blit(message, (40, 10))
         pygame.display.update()
 
     def draw_piece_in_prompt(self, color, pos_x):
@@ -56,10 +56,10 @@ class View:
         in prompt screen (above board) in given x position
         """
         # clear the prompt from previously drawn piece
-        pygame.draw.rect(self.__screen, const.BLACK,
+        pygame.draw.rect(self._screen, const.BLACK,
                          (0, 0, const.SCREEN_WIDTH, const.MESSAGE_PROMPT_SIZE))
         # draw new piece
-        pygame.draw.circle(self.__screen, color,
+        pygame.draw.circle(self._screen, color,
                            (pos_x, int(const.CIRCLE_DIAMETER / 2)),
                            int(const.CIRCLE_DIAMETER/2))
         pygame.display.update()
@@ -68,7 +68,7 @@ class View:
         """
         Clears prompt screen from pieces (only black background)
         """
-        pygame.draw.rect(self.__screen, const.BLACK,
+        pygame.draw.rect(self._screen, const.BLACK,
                          (0, 0, const.SCREEN_WIDTH, const.MESSAGE_PROMPT_SIZE))
         pygame.display.update()
 
