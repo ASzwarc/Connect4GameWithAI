@@ -1,5 +1,5 @@
 """
-Class containig different oponents AI's
+File containig different oponents AI classes
 """
 
 import random
