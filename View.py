@@ -77,3 +77,9 @@ class View:
         Calls pygame.display.flip()
         """
         pygame.display.flip()
+
+    def get_pos_x_from(self, column) -> int:
+        """
+        Calculates position x on screen based on column number
+        """
+        return int(column * const.CIRCLE_DIAMETER + const.CIRCLE_DIAMETER / 2)
