@@ -3,6 +3,7 @@ File containig different oponents AI classes
 """
 
 import random
+import Board
 from constants import COLUMN_COUNT
 
 
@@ -21,4 +22,7 @@ class AI:
 class RandomAI(AI):
 
     def get_next_move(self) -> int:
-        return random.randint(0, COLUMN_COUNT - 1)
+        column = -1
+        while not self._board.is_empty_slot_in(column):
+            column = random.randint(0, COLUMN_COUNT - 1)
+        return column

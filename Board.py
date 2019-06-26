@@ -41,7 +41,10 @@ class Board():
         """
         Checks if there is place in column to add another piece
         """
-        return np.count_nonzero(self._board[:, col] == 0) != 0
+        if col >= 0 and col < COLUMN_COUNT:
+            return np.count_nonzero(self._board[:, col] == 0) != 0
+        else:
+            return False
 
     def get_open_row(self, col) -> int:
         """
