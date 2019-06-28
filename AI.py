@@ -38,7 +38,8 @@ class SimpleLogicAI:
 
     def get_next_move(self) -> int:
         """
-        Returns AI's next move
+        Returns AI's next move. AI is inserting piece in temporary board,
+        which is copy of current board, and checks which move gives best score.
         """
         best_score = -inf
         best_column = -1
@@ -78,6 +79,8 @@ class SimpleLogicAI:
 
         return score
 
+    # TODO Consider refactoring this and moving to Board class.
+    # Evaluate function could be passed as a parameter
     def get_score(self, piece) -> int:
         """
         Calculates current score for given piece. It's mainly used by AIs.
