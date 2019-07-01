@@ -5,7 +5,7 @@ import random
 import numpy as np
 from math import inf
 import Board
-from constants import COLUMN_COUNT, AI, HUMAN
+from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH
 import copy
 
 
@@ -41,16 +41,18 @@ class SimpleLogicAI:
         Returns AI's next move. AI is inserting piece in temporary board,
         which is copy of current board, and checks which move gives best score.
         """
+        open_columns = self._board.get_valid_locations()
         best_score = -inf
-        best_column = -1
-        for column_no in range(COLUMN_COUNT):
+        best_column = random.choice(open_columns)
+        for col in open_columns:
             temp_board = copy.deepcopy(self._board)
-            row = temp_board.get_open_row(column_no)
-            temp_board.drop_piece(row, column_no, AI)
+            row = temp_board.get_open_row(col)
+            temp_board.drop_piece(row, col, AI)
             score = self.get_score(AI)
+            print(f"Score {score} for row {row} col {col}")
             if score > best_score:
                 best_score = score
-                best_column = column_no
+                best_column = col
         return best_column
 
     def evalute_window(self, window, piece) -> int:
@@ -65,16 +67,16 @@ class SimpleLogicAI:
         if np.count_nonzero(window == piece) == 4:
             score += 100
         elif (np.count_nonzero(window == piece) == 3 and
-                np.count_nonzero(window == 0) >= 1):
+                np.count_nonzero(window == 0) == 1):
             score += 10
         elif (np.count_nonzero(window == piece) == 2 and
-                np.count_nonzero(window == 0) >= 2):
+                np.count_nonzero(window == 0) == 2):
             score += 5
         else:
             pass
 
         if (np.count_nonzero(window == oponent) == 3 and
-                np.count_nonzero(window == 0) >= 1):
+                np.count_nonzero(window == 0) == 1):
             score -= 80
 
         return score
@@ -87,14 +89,28 @@ class SimpleLogicAI:
         """
         score = 0
         for column in range(self._board.columns):
-            score += self.evalute_window(self._board.board[:, column], piece)
+            array = np.array(self._board.board[:, column]).flatten()
+            for row in range(self._board.rows - WINDOW_LENGTH - 1):
+                score += self.evalute_window(array[row:row + WINDOW_LENGTH],
+                                             piece)
 
         for row in range(self._board.rows):
-            score += self.evalute_window(self._board.board[row, :], piece)
+            array = np.array(self._board.board[row, :]).flatten()
+            for column in range(self._board.columns - WINDOW_LENGTH - 1):
+                score += self.evalute_window(
+                    array[column:column + WINDOW_LENGTH], piece)
 
-        for diagonal_no in range(-2, 3):
-            score += self.evalute_window(self._board.board.diagonal(
-                diagonal_no), piece)
-            score += self.evalute_window(np.fliplr(self._board.board).diagonal(
-                diagonal_no), piece)
+        for row in range(self._board.rows):
+            for column in range(self._board.columns - WINDOW_LENGTH - 1):
+                array_pos = np.array(
+                    self._board.board[row:row + WINDOW_LENGTH,
+                                      column:column + WINDOW_LENGTH].
+                    diagonal(0)).flatten()
+                score += self.evalute_window(array_pos, piece)
+
+                array_neg = np.array(np.fliplr(self._board.board)
+                                     [row:row + WINDOW_LENGTH,
+                                      column:column + WINDOW_LENGTH].
+                                     diagonal(0)).flatten()
+                score += self.evalute_window(array_neg, piece)
         return score

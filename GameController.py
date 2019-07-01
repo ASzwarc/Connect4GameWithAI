@@ -99,6 +99,7 @@ class GameController:
             # AI turn
             else:
                 end_game = self.evaluate_ai_action(end_game)
+                self._board.print_board_not_flipped()
             self._view.display_flip()
 
         pygame.time.wait(const.MS_BEFORE_EXIT)
