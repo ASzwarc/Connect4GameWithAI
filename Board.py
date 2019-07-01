@@ -31,6 +31,10 @@ class Board():
         """
         print(np.flipud(self._board))
 
+    # TODO this is only for debugging
+    def print_board_not_flipped(self):
+        print(self._board)
+
     def drop_piece(self, row, col, piece):
         """
         Drops new piece to game board.
@@ -45,6 +49,13 @@ class Board():
             return np.count_nonzero(self._board[:, col] == 0) != 0
         else:
             return False
+
+    def get_valid_locations(self) -> [int]:
+        """
+        Returns columns with empty slots
+        """
+        return [col for col in range(COLUMN_COUNT) if
+                self.is_empty_slot_in(col)]
 
     def get_open_row(self, col) -> int:
         """
