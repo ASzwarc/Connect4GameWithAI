@@ -66,7 +66,7 @@ class Board():
 
     def is_move_winning(self, piece) -> bool:
         """
-        Check if there are 3 same elements in row, column or diagonal
+        Check if there are 4 same elements in row, column or diagonal
         """
         # check rows
         for row in range(self._rows):
@@ -82,7 +82,7 @@ class Board():
                     return True
 
         # check diagonals
-        for diagonal in range(-2, 3):
+        for diagonal in range(-2, 4):
             if np.count_nonzero(self._board.diagonal(diagonal) == piece) == 4:
                 return True
             elif np.count_nonzero(
