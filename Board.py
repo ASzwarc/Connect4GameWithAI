@@ -99,18 +99,24 @@ class Board():
         accept two parameters: array to be evaluated and piece number
         """
         score = 0
+        # Center column
+        center_column = np.array(self.board[:, COLUMN_COUNT // 2]).flatten()
+        score += evaluation_function(center_column, piece, True)
+
+        # Vertical
         for column in range(self.columns):
             array = np.array(self.board[:, column]).flatten()
             for row in range(self.rows - window_length + 1):
                 result = evaluation_function(array[row:row + window_length],
                                              piece)
                 score += result
+        # Horizontal
         for row in range(self.rows):
             array = np.array(self.board[row, :]).flatten()
             for column in range(self.columns - window_length + 1):
                 score += evaluation_function(
                     array[column:column + window_length], piece)
-
+        # Diagonal
         for row in range(self.rows):
             for column in range(self.columns - window_length + 1):
                 array_pos = np.array(

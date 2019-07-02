@@ -59,7 +59,7 @@ class SimpleLogicAI:
         return best_column
 
     @staticmethod
-    def evalute_window(window, piece) -> int:
+    def evalute_window(window, piece, isCenter=False) -> int:
         """
         Evaluates score for given window and piece
         """
@@ -82,5 +82,8 @@ class SimpleLogicAI:
         if (np.count_nonzero(window == oponent) == 3 and
                 np.count_nonzero(window == 0) == 1):
             score -= 80
+
+        if isCenter:
+            score += 6 * np.count_nonzero(window == piece)
 
         return score
