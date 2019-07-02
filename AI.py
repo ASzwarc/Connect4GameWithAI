@@ -44,18 +44,22 @@ class SimpleLogicAI:
         open_columns = self._board.get_valid_locations()
         best_score = -inf
         best_column = random.choice(open_columns)
+        print("Next move evaluation")
         for col in open_columns:
             temp_board = copy.deepcopy(self._board)
             row = temp_board.get_open_row(col)
             temp_board.drop_piece(row, col, AI)
-            score = self.get_score(AI)
-            print(f"Score {score} for row {row} col {col}")
+            score = temp_board.evaluate_window(WINDOW_LENGTH, AI,
+                                               SimpleLogicAI.evalute_window)
+            print(f"Temp. piece at {row}, {col} = {score}")
+            temp_board.print_board_not_flipped()
             if score > best_score:
                 best_score = score
                 best_column = col
         return best_column
 
-    def evalute_window(self, window, piece) -> int:
+    @staticmethod
+    def evalute_window(window, piece) -> int:
         """
         Evaluates score for given window and piece
         """
@@ -79,38 +83,4 @@ class SimpleLogicAI:
                 np.count_nonzero(window == 0) == 1):
             score -= 80
 
-        return score
-
-    # TODO Consider refactoring this and moving to Board class.
-    # Evaluate function could be passed as a parameter
-    def get_score(self, piece) -> int:
-        """
-        Calculates current score for given piece. It's mainly used by AIs.
-        """
-        score = 0
-        for column in range(self._board.columns):
-            array = np.array(self._board.board[:, column]).flatten()
-            for row in range(self._board.rows - WINDOW_LENGTH - 1):
-                score += self.evalute_window(array[row:row + WINDOW_LENGTH],
-                                             piece)
-
-        for row in range(self._board.rows):
-            array = np.array(self._board.board[row, :]).flatten()
-            for column in range(self._board.columns - WINDOW_LENGTH - 1):
-                score += self.evalute_window(
-                    array[column:column + WINDOW_LENGTH], piece)
-
-        for row in range(self._board.rows):
-            for column in range(self._board.columns - WINDOW_LENGTH - 1):
-                array_pos = np.array(
-                    self._board.board[row:row + WINDOW_LENGTH,
-                                      column:column + WINDOW_LENGTH].
-                    diagonal(0)).flatten()
-                score += self.evalute_window(array_pos, piece)
-
-                array_neg = np.array(np.fliplr(self._board.board)
-                                     [row:row + WINDOW_LENGTH,
-                                      column:column + WINDOW_LENGTH].
-                                     diagonal(0)).flatten()
-                score += self.evalute_window(array_neg, piece)
         return score
