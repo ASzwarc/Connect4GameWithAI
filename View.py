@@ -32,9 +32,9 @@ class View:
                                 row*const.CIRCLE_DIAMETER -
                                 const.CIRCLE_DIAMETER/2))
                 color = const.BLACK
-                if board.board[row, column] == 1:
+                if board.model[row, column] == 1:
                     color = const.RED
-                elif board.board[row, column] == 2:
+                elif board.model[row, column] == 2:
                     color = const.YELLOW
 
                 pygame.draw.circle(self._screen, color, position,

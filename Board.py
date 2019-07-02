@@ -11,11 +11,11 @@ class Board():
     def __init__(self):
         self._rows = ROW_COUNT
         self._columns = COLUMN_COUNT
-        self._board = np.zeros((self._rows, self._columns), np.int8)
+        self._model = np.zeros((self._rows, self._columns), np.int8)
 
     @property
-    def board(self):
-        return self._board
+    def model(self):
+        return self._model
 
     @property
     def rows(self):
@@ -29,24 +29,24 @@ class Board():
         """
         Prints board to standard output
         """
-        print(np.flipud(self._board))
+        print(np.flipud(self._model))
 
     # TODO this is only for debugging
     def print_board_not_flipped(self):
-        print(self._board)
+        print(self._model)
 
     def drop_piece(self, row, col, piece):
         """
         Drops new piece to game board.
         """
-        self._board[row, col] = piece
+        self._model[row, col] = piece
 
     def is_empty_slot_in(self, col) -> bool:
         """
         Checks if there is place in column to add another piece
         """
         if col >= 0 and col < COLUMN_COUNT:
-            return np.count_nonzero(self._board[:, col] == 0) != 0
+            return np.count_nonzero(self._model[:, col] == 0) != 0
         else:
             return False
 
@@ -62,7 +62,7 @@ class Board():
         Returns index of first, not occupied row in column
         It throws error if there are no empty slots in column!
         """
-        return np.nonzero(self._board[:, col] == 0)[0][0]
+        return np.nonzero(self._model[:, col] == 0)[0][0]
 
     def is_move_winning(self, piece) -> bool:
         """
@@ -72,21 +72,21 @@ class Board():
         for row in range(self._rows):
             for column in range(self._columns - 4):
                 if np.count_nonzero(
-                        self._board[row, column:column + 4] == piece) == 4:
+                        self._model[row, column:column + 4] == piece) == 4:
                     return True
         # check columns
         for column in range(self._columns):
             for row in range(self._rows - 4):
                 if np.count_nonzero(
-                        self._board[row:row + 4, column] == piece) == 4:
+                        self._model[row:row + 4, column] == piece) == 4:
                     return True
 
         # check diagonals
         for diagonal in range(-2, 4):
-            if np.count_nonzero(self._board.diagonal(diagonal) == piece) == 4:
+            if np.count_nonzero(self._model.diagonal(diagonal) == piece) == 4:
                 return True
             elif np.count_nonzero(
-                    np.fliplr(self._board).diagonal(diagonal) == piece) == 4:
+                    np.fliplr(self._model).diagonal(diagonal) == piece) == 4:
                 return True
 
         return False
@@ -100,19 +100,19 @@ class Board():
         """
         score = 0
         # Center column
-        center_column = np.array(self.board[:, COLUMN_COUNT // 2]).flatten()
+        center_column = np.array(self._model[:, COLUMN_COUNT // 2]).flatten()
         score += evaluation_function(center_column, piece, True)
 
         # Vertical
         for column in range(self.columns):
-            array = np.array(self.board[:, column]).flatten()
+            array = np.array(self._model[:, column]).flatten()
             for row in range(self.rows - window_length + 1):
                 result = evaluation_function(array[row:row + window_length],
                                              piece)
                 score += result
         # Horizontal
         for row in range(self.rows):
-            array = np.array(self.board[row, :]).flatten()
+            array = np.array(self._model[row, :]).flatten()
             for column in range(self.columns - window_length + 1):
                 score += evaluation_function(
                     array[column:column + window_length], piece)
@@ -120,12 +120,12 @@ class Board():
         for row in range(self.rows):
             for column in range(self.columns - window_length + 1):
                 array_pos = np.array(
-                    self.board[row:row + window_length,
-                               column:column + window_length].
+                    self._model[row:row + window_length,
+                                column:column + window_length].
                     diagonal(0)).flatten()
                 score += evaluation_function(array_pos, piece)
 
-                array_neg = np.array(np.fliplr(self.board)
+                array_neg = np.array(np.fliplr(self._model)
                                      [row:row + window_length,
                                       column:column + window_length].
                                      diagonal(0)).flatten()
