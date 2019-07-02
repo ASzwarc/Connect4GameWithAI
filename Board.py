@@ -90,3 +90,38 @@ class Board():
                 return True
 
         return False
+
+    def evaluate_window(self, window_length,
+                        piece, evaluation_function) -> int:
+        """
+        Applies evaluation function on every diagonal, row, column
+        of window_length. Returns obtained score. Evaluation_function should
+        accept two parameters: array to be evaluated and piece number
+        """
+        score = 0
+        for column in range(self.columns):
+            array = np.array(self.board[:, column]).flatten()
+            for row in range(self.rows - window_length + 1):
+                result = evaluation_function(array[row:row + window_length],
+                                             piece)
+                score += result
+        for row in range(self.rows):
+            array = np.array(self.board[row, :]).flatten()
+            for column in range(self.columns - window_length + 1):
+                score += evaluation_function(
+                    array[column:column + window_length], piece)
+
+        for row in range(self.rows):
+            for column in range(self.columns - window_length + 1):
+                array_pos = np.array(
+                    self.board[row:row + window_length,
+                               column:column + window_length].
+                    diagonal(0)).flatten()
+                score += evaluation_function(array_pos, piece)
+
+                array_neg = np.array(np.fliplr(self.board)
+                                     [row:row + window_length,
+                                      column:column + window_length].
+                                     diagonal(0)).flatten()
+                score += evaluation_function(array_neg, piece)
+        return score
