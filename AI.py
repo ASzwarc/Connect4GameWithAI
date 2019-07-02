@@ -87,3 +87,24 @@ class SimpleLogicAI:
             score += 6 * np.count_nonzero(window == piece)
 
         return score
+
+
+class MinMaxAI:
+    """
+    AI that uses MinMax algorithm to calculate best move
+    """
+    def __init__(self, board):
+        self._board = board
+
+    def get_next_move(self) -> int:
+        """
+        Returns AI's next move. Next move is calculated using MinMax algorithm
+        """
+        pass
+
+    @staticmethod
+    def evaluate_window(self, window, piece) -> int:
+        """
+        Evaluates score for given window and piece
+        """
+        pass
