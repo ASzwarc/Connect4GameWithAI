@@ -70,13 +70,13 @@ class Board():
         """
         # check rows
         for row in range(self._rows):
-            for column in range(self._columns - 4):
+            for column in range(self._columns - 3):
                 if np.count_nonzero(
                         self._model[row, column:column + 4] == piece) == 4:
                     return True
         # check columns
         for column in range(self._columns):
-            for row in range(self._rows - 4):
+            for row in range(self._rows - 3):
                 if np.count_nonzero(
                         self._model[row:row + 4, column] == piece) == 4:
                     return True
