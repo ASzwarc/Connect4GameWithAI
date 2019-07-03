@@ -15,7 +15,7 @@ class GameController:
     def __init__(self):
         self._board = Board.Board()
         self._view = View.View()
-        self._ai = AI.SimpleLogicAI(self._board)
+        self._ai = AI.MinMaxAI(self._board)
         self._turn = 0
 
         self._view.draw_board(self._board)
