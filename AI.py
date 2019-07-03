@@ -8,6 +8,13 @@ import Board
 from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH
 import copy
 
+# TODO:
+#   -> evaluate_window: does it need parameter "piece"?
+#   -> evaluate_window: does it need parameter "window_length"?
+#   -> evaluate_window: change name because it sucks...
+#   -> minimax: check if this function needs to return tuple. Looks like first
+#      parameter from it is always ignored
+
 
 class RandomAI:
     """
