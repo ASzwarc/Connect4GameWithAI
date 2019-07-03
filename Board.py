@@ -39,6 +39,13 @@ class Board():
         """
         self._model[row, col] = piece
 
+    def drop_piece_in(self, col, piece):
+        """
+        Drops new piece in first valid row in column.
+        """
+        row = self.get_open_row(col)
+        self.drop_piece(row, col, piece)
+
     def is_empty_slot_in(self, col) -> bool:
         """
         Checks if there is place in column to add another piece
