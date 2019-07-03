@@ -54,8 +54,7 @@ class SimpleLogicAI:
         print("Next move evaluation")
         for col in open_columns:
             temp_board = copy.deepcopy(self._board)
-            row = temp_board.get_open_row(col)
-            temp_board.drop_piece(row, col, AI)
+            temp_board.drop_piece_in(col, AI)
             score = temp_board.evaluate_window(WINDOW_LENGTH, AI,
                                                SimpleLogicAI.evalute_window)
             print(f"Temp. piece at {row}, {col} = {score}")
