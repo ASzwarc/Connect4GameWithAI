@@ -5,8 +5,6 @@ from constants import ROW_COUNT, COLUMN_COUNT
 import numpy as np
 
 
-# TODO Add functions to count each players ones, twos and threes in a row,
-# column and diagonal to create score metrics after each move
 class Board():
     def __init__(self):
         self._rows = ROW_COUNT
@@ -131,3 +129,11 @@ class Board():
                                      diagonal(0)).flatten()
                 score += evaluation_function(array_neg, piece)
         return score
+
+    def is_terminal(self, first_piece, second_piece):
+        """
+        Checks wheter one of the players won or there are no possible moves.
+        """
+        return (self.is_move_winning(first_piece) or
+                self.is_move_winning(second_piece) or
+                not self.get_valid_locations())
