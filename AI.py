@@ -116,10 +116,10 @@ class MinMaxAI:
                 return (None, 0)
         else:  # depth is zero
             return (None, board.evaluate_window(WINDOW_LENGTH, AI,
-                                                MinMaxAI.evalute_window))
+                                                MinMaxAI.evaluate_window))
 
-    def minimax(self, board: Board, depth: int=MINIMAX_DEPTH,
-                maximizingPlayer: bool):
+    def minimax(self, board: Board, maximizingPlayer: bool,
+                depth: int=MINIMAX_DEPTH):
         """
         Minimax algorithm loop
 
@@ -133,8 +133,8 @@ class MinMaxAI:
             Tuple(column (int), score(int)): column with best score
         """
         # stop condition
-        is_terminal = board.is_terminal()
-        if depth = 0 or is_terminal:
+        is_terminal = board.is_terminal(AI, HUMAN)
+        if depth == 0 or is_terminal:
             return self.evaluate_stop_condition(board, depth, is_terminal)
         if maximizingPlayer:  # AI
             value = -inf
@@ -143,7 +143,7 @@ class MinMaxAI:
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, AI)
-                score = minimax(temp_board, depth - 1, False)[1]
+                score = self.minimax(temp_board, depth - 1, False)[1]
                 if score > value:
                     value = score
                     best_col = col
@@ -155,7 +155,7 @@ class MinMaxAI:
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, HUMAN)
-                score = minimax(temp_board, depth - 1, True)[1]
+                score = self.minimax(temp_board, depth - 1, True)[1]
                 if score < value:
                     value = score
                     best_col = col
@@ -170,7 +170,7 @@ class MinMaxAI:
         print(f"Best result {result[1]} for {result[0]} column")
 
     @staticmethod
-    def evaluate_window(self, window, piece) -> int:
+    def evaluate_window(self, window, piece, isCenter=False) -> int:
         """
         Evaluates score for given window and piece
         """
