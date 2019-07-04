@@ -14,6 +14,7 @@ import copy
 #   -> evaluate_window: change name because it sucks...
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
+#   -> minimax: add alpha-beta pruning
 
 
 class RandomAI:
