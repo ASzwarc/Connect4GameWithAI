@@ -5,7 +5,7 @@ import random
 import numpy as np
 from math import inf
 import Board
-from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH
+from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH, MINIMAX_DEPT
 import copy
 
 # TODO:
@@ -118,7 +118,8 @@ class MinMaxAI:
             return (None, board.evaluate_window(WINDOW_LENGTH, AI,
                                                 MinMaxAI.evalute_window))
 
-    def minimax(self, board: Board, depth=4: int, maximizingPlayer: bool):
+    def minimax(self, board: Board, depth: int=MINIMAX_DEPT,
+                maximizingPlayer: bool):
         """
         Minimax algorithm loop
 
@@ -165,7 +166,7 @@ class MinMaxAI:
         Returns AI's next move. Next move is calculated using MinMax algorithm
         """
         temp_board = copy.deepcopy(self._board)
-        result = self.minimax(temp_board, 4, True)
+        result = self.minimax(temp_board, MINIMAX_DEPT, True)
         print(f"Best result {result[1]} for {result[0]} column")
 
     @staticmethod
