@@ -168,9 +168,10 @@ class MinMaxAI:
         temp_board = copy.deepcopy(self._board)
         result = self.minimax(temp_board, MINIMAX_DEPTH, True)
         print(f"Best result {result[1]} for {result[0]} column")
+        return result[0]
 
     @staticmethod
-    def evaluate_window(self, window, piece, isCenter=False) -> int:
+    def evaluate_window(window, piece, isCenter=False) -> int:
         """
         Evaluates score for given window and piece
         """
