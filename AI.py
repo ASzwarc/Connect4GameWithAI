@@ -7,14 +7,13 @@ from math import inf
 import Board
 from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH, MINIMAX_DEPTH
 import copy
+import time
 
 # TODO:
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
 #   -> minimax: create function that will print scores on board for all
 #               evaluated moves
-#   -> minimax: add time measurement to check how much alpha-beta pruning
-#               speed things up
 
 
 class RandomAI:
@@ -175,7 +174,9 @@ class MinMaxAI:
         Returns AI's next move. Next move is calculated using MinMax algorithm
         """
         temp_board = copy.deepcopy(self._board)
+        start_time = time.time()
         result = self.minimax(temp_board, True, MINIMAX_DEPTH, -inf, inf)
+        print(f"Execution time: {time.time() - start_time}s")
         print(f"Best result {result[1]} for column {result[0]}")
         return result[0]
 
