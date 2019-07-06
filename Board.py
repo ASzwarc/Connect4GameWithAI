@@ -1,7 +1,7 @@
 """
 Definiton of Board class
 """
-from constants import ROW_COUNT, COLUMN_COUNT
+from constants import ROW_COUNT, COLUMN_COUNT, WINDOW_LENGTH
 import numpy as np
 
 
@@ -96,12 +96,12 @@ class Board():
 
         return False
 
-    def evaluate_window(self, window_length,
-                        piece, evaluation_function) -> int:
+    def evaluate_window(self, piece, evaluation_function) -> int:
         """
         Applies evaluation function on every diagonal, row, column
-        of window_length. Returns obtained score. Evaluation_function should
-        accept two parameters: array to be evaluated and piece number
+        of constants.WINDOW_LENGTH. Returns obtained score.
+        Evaluation_function should accept two parameters:
+        array to be evaluated and piece number.
         """
         score = 0
         # Center column
@@ -111,28 +111,28 @@ class Board():
         # Vertical
         for column in range(self.columns):
             array = np.array(self._model[:, column]).flatten()
-            for row in range(self.rows - window_length + 1):
-                result = evaluation_function(array[row:row + window_length],
+            for row in range(self.rows - WINDOW_LENGTH + 1):
+                result = evaluation_function(array[row:row + WINDOW_LENGTH],
                                              piece)
                 score += result
         # Horizontal
         for row in range(self.rows):
             array = np.array(self._model[row, :]).flatten()
-            for column in range(self.columns - window_length + 1):
+            for column in range(self.columns - WINDOW_LENGTH + 1):
                 score += evaluation_function(
-                    array[column:column + window_length], piece)
+                    array[column:column + WINDOW_LENGTH], piece)
         # Diagonal
         for row in range(self.rows):
-            for column in range(self.columns - window_length + 1):
+            for column in range(self.columns - WINDOW_LENGTH + 1):
                 array_pos = np.array(
-                    self._model[row:row + window_length,
-                                column:column + window_length].
+                    self._model[row:row + WINDOW_LENGTH,
+                                column:column + WINDOW_LENGTH].
                     diagonal(0)).flatten()
                 score += evaluation_function(array_pos, piece)
 
                 array_neg = np.array(np.fliplr(self._model)
-                                     [row:row + window_length,
-                                      column:column + window_length].
+                                     [row:row + WINDOW_LENGTH,
+                                      column:column + WINDOW_LENGTH].
                                      diagonal(0)).flatten()
                 score += evaluation_function(array_neg, piece)
         return score
