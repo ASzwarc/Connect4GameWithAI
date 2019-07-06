@@ -12,6 +12,8 @@ import copy
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
 #   -> minimax: add alpha-beta pruning
+#   -> minimax: create function that will print scores on board for all
+#               evaluated moves
 
 
 class RandomAI:
@@ -141,7 +143,7 @@ class MinMaxAI:
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, AI)
-                score = self.minimax(temp_board, depth - 1, False)[1]
+                score = self.minimax(temp_board, False, depth - 1)[1]
                 if score > value:
                     value = score
                     best_col = col
@@ -149,11 +151,11 @@ class MinMaxAI:
         else:  # player
             value = inf
             best_col = -10
-            columns = Board.get_valid_locations()
+            columns = board.get_valid_locations()
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, HUMAN)
-                score = self.minimax(temp_board, depth - 1, True)[1]
+                score = self.minimax(temp_board, True, depth - 1)[1]
                 if score < value:
                     value = score
                     best_col = col
@@ -164,8 +166,8 @@ class MinMaxAI:
         Returns AI's next move. Next move is calculated using MinMax algorithm
         """
         temp_board = copy.deepcopy(self._board)
-        result = self.minimax(temp_board, MINIMAX_DEPTH, True)
-        print(f"Best result {result[1]} for {result[0]} column")
+        result = self.minimax(temp_board, True, MINIMAX_DEPTH)
+        print(f"Best result {result[1]} for column {result[0]}")
         return result[0]
 
     @staticmethod
