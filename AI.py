@@ -10,7 +10,6 @@ import copy
 
 # TODO:
 #   -> evaluate_window: does it need parameter "piece"?
-#   -> evaluate_window: change name because it sucks...
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
 #   -> minimax: add alpha-beta pruning
@@ -56,7 +55,7 @@ class SimpleLogicAI:
             temp_board = copy.deepcopy(self._board)
             temp_board.drop_piece_in(col, AI)
             score = temp_board.evaluate_window(AI,
-                                               SimpleLogicAI.evalute_window)
+                                               SimpleLogicAI.get_score)
             print(f"Temp. piece at {row}, {col} = {score}")
             temp_board.print_board_not_flipped()
             if score > best_score:
@@ -65,7 +64,7 @@ class SimpleLogicAI:
         return best_column
 
     @staticmethod
-    def evalute_window(window, piece, isCenter=False) -> int:
+    def get_score(window, piece, isCenter=False) -> int:
         """
         Evaluates score for given window and piece
         """
@@ -116,7 +115,7 @@ class MinMaxAI:
                 return (None, 0)
         else:  # depth is zero
             return (None, board.evaluate_window(AI,
-                                                MinMaxAI.evaluate_window))
+                                                MinMaxAI.get_score))
 
     def minimax(self, board: Board, maximizingPlayer: bool,
                 depth: int=MINIMAX_DEPTH):
@@ -171,7 +170,7 @@ class MinMaxAI:
         return result[0]
 
     @staticmethod
-    def evaluate_window(window, piece, isCenter=False) -> int:
+    def get_score(window, piece, isCenter=False) -> int:
         """
         Evaluates score for given window and piece
         """
