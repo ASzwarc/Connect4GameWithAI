@@ -9,7 +9,6 @@ from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH, MINIMAX_DEPTH
 import copy
 
 # TODO:
-#   -> evaluate_window: does it need parameter "piece"?
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
 #   -> minimax: add alpha-beta pruning
@@ -105,7 +104,7 @@ class MinMaxAI:
         """
         Evaluates score after stop condition have been reached.
         """
-        some_big_score = 1000000
+        some_big_score = 100000000
         if is_terminal:
             if board.is_move_winning(AI):
                 return (None, some_big_score)
@@ -183,18 +182,18 @@ class MinMaxAI:
             score += 100
         elif (np.count_nonzero(window == piece) == 3 and
                 np.count_nonzero(window == 0) == 1):
-            score += 10
+            score += 5
         elif (np.count_nonzero(window == piece) == 2 and
                 np.count_nonzero(window == 0) == 2):
-            score += 5
+            score += 2
         else:
             pass
 
         if (np.count_nonzero(window == oponent) == 3 and
                 np.count_nonzero(window == 0) == 1):
-            score -= 80
+            score -= 5
 
         if isCenter:
-            score += 6 * np.count_nonzero(window == piece)
+            score += 3 * np.count_nonzero(window == piece)
 
         return score
