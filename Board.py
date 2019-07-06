@@ -73,6 +73,21 @@ class Board():
         """
         Check if there are 4 same elements in row, column or diagonal
         """
+        def check_diagonal(diag_array, piece):
+            """
+            Helper function to check if there are 4 same elements in diagonal.
+            Diagonal can be longer than 4 elements!
+            """
+            if diag_array.size > 4:
+                stop = diag_array.size - 4 + 1
+                for i in range(stop):
+                    if np.count_nonzero(diag_array[i:i + 4] == piece) == 4:
+                        return True
+            else:
+                if np.count_nonzero(diag_array == piece) == 4:
+                    return True
+            return False
+
         # check rows
         for row in range(self._rows):
             for column in range(self._columns - 3):
@@ -88,12 +103,11 @@ class Board():
 
         # check diagonals
         for diagonal in range(-2, 4):
-            if np.count_nonzero(self._model.diagonal(diagonal) == piece) == 4:
+            if check_diagonal(self._model.diagonal(diagonal), piece):
                 return True
-            elif np.count_nonzero(
-                    np.fliplr(self._model).diagonal(diagonal) == piece) == 4:
+            elif check_diagonal(np.fliplr(self._model).diagonal(diagonal),
+                                piece):
                 return True
-
         return False
 
     def evaluate_window(self, piece, evaluation_function) -> int:
