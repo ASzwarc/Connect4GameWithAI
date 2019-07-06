@@ -11,9 +11,10 @@ import copy
 # TODO:
 #   -> minimax: check if this function needs to return tuple. Looks like first
 #      parameter from it is always ignored
-#   -> minimax: add alpha-beta pruning
 #   -> minimax: create function that will print scores on board for all
 #               evaluated moves
+#   -> minimax: add time measurement to check how much alpha-beta pruning
+#               speed things up
 
 
 class RandomAI:
@@ -119,7 +120,7 @@ class MinMaxAI:
                                                 MinMaxAI.get_score))
 
     def minimax(self, board: Board, maximizingPlayer: bool,
-                depth: int=MINIMAX_DEPTH):
+                depth: int, alpha: int, beta: int):
         """
         Minimax algorithm loop
 
@@ -143,10 +144,14 @@ class MinMaxAI:
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, AI)
-                score = self.minimax(temp_board, False, depth - 1)[1]
+                score = self.minimax(temp_board, False,
+                                     depth - 1, alpha, beta)[1]
                 if score > value:
                     value = score
                     best_col = col
+                alpha = max(alpha, value)
+                if alpha >= beta:
+                    break
             return (best_col, value)
         else:  # player
             value = inf
@@ -155,10 +160,14 @@ class MinMaxAI:
             for col in columns:
                 temp_board = copy.deepcopy(board)
                 temp_board.drop_piece_in(col, HUMAN)
-                score = self.minimax(temp_board, True, depth - 1)[1]
+                score = self.minimax(temp_board, True,
+                                     depth - 1, alpha, beta)[1]
                 if score < value:
                     value = score
                     best_col = col
+                beta = min(beta, value)
+                if alpha >= beta:
+                    break
             return (best_col, value)
 
     def get_next_move(self) -> int:
@@ -166,7 +175,7 @@ class MinMaxAI:
         Returns AI's next move. Next move is calculated using MinMax algorithm
         """
         temp_board = copy.deepcopy(self._board)
-        result = self.minimax(temp_board, True, MINIMAX_DEPTH)
+        result = self.minimax(temp_board, True, MINIMAX_DEPTH, -inf, inf)
         print(f"Best result {result[1]} for column {result[0]}")
         return result[0]
 
