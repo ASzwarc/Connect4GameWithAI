@@ -9,12 +9,6 @@ from constants import COLUMN_COUNT, AI, HUMAN, WINDOW_LENGTH, MINIMAX_DEPTH
 import copy
 import time
 
-# TODO:
-#   -> minimax: check if this function needs to return tuple. Looks like first
-#      parameter from it is always ignored
-#   -> minimax: create function that will print scores on board for all
-#               evaluated moves
-
 
 class RandomAI:
     """
